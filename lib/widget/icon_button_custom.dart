@@ -3,12 +3,13 @@ class MyButton extends StatelessWidget {
 
 
   MyButton({
-    Key? key, required this.icon
+    Key? key, required this.icon, required this.onPressed
   }) : super(key: key);
   final IconData icon;
+  final onPressed;
   @override
   Widget build(BuildContext context) {
-    return IconButton(onPressed: (){}, icon: Icon(icon),
+    return IconButton(onPressed: onPressed, icon: Icon(icon),
     splashRadius: 15,);
   }
 }

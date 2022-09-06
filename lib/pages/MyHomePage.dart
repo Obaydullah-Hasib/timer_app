@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:timer_app_rashad_vai/widget/timer.dart';
 
 import '../widget/icon_button_custom.dart';
 
@@ -12,6 +13,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<bool> isSelected = [true, false];
   int selected=0;
   List<String> _tabs = ["All Timers",'Active Timers'];
@@ -22,18 +24,34 @@ class _MyHomePageState extends State<MyHomePage> {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: Colors.transparent,
-        //   elevation: 0,
-        //   title: Text(widget.title),
-        //   centerTitle: true,
-        //   leading: GestureDetector(
-        //     onTap: (){
-        //     },
-        //     child: Icon(Icons.),
-        //   ),
-        //
-        // ),
+        key: _scaffoldKey,
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              DrawerHeader(child: Container(color:Colors.tealAccent)),
+
+              ListTile(
+                title: Text("adsf"),
+
+              ),
+              Divider(thickness: 2,),
+
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){},
+          child: Icon(Icons.add),
+          backgroundColor: Colors.grey.shade300,
+          splashColor: Colors.black,
+
+          shape: StadiumBorder(
+            side: BorderSide(
+              color: Colors.grey.shade500,
+            )
+          ),
+        ),
+
 
         body: SafeArea(
             child: Container(
@@ -41,63 +59,21 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               Row(
                 children: [
-                  MyButton(icon: Icons.keyboard_option_key),
+                  MyButton(icon: Icons.menu,onPressed: (){ _scaffoldKey.currentState?.openDrawer();},),
                   const Padding(
                     padding: EdgeInsets.all(12.0),
                     child: Text("Timer"),
                   ),
                   Row(
                     children: [
-                      MyButton(icon: Icons.bolt),
-                      MyButton(icon: Icons.add)
+                      MyButton(icon: Icons.bolt,onPressed: (){print("bolt");}),
+                      MyButton(icon: Icons.add,onPressed: (){print("add");})
                     ],
                   )
                 ],
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
               ),
-              // Container(
-              //     decoration: BoxDecoration(
-              //         borderRadius: BorderRadius.circular(5),
-              //         border: Border.all(
-              //             color: Colors.black,
-              //             width: 1,
-              //             style: BorderStyle.solid)),
-              //
-              //     //  padding: EdgeInsets.fromLTRB(size.width/4, 10, size.width/4, 10),
-              //     width: size.width / 2,
-              //     height: size.height / 25,
-              //     child: ToggleButtons(
-              //       fillColor: selected==0? Colors.blue.shade400:,
-              //       children: [
-              //
-              //        Text("All Timers",style: TextStyle(
-              //         color:Colors.black
-              //       ),), Text("Active Timers")],
-              //       isSelected: isSelected,
-              //       onPressed: (int newIndex) {
-              //         setState(() {
-              //           selected = newIndex;
-              //         });
-              //       },
-              //     )
-              //     //Row(
-              //     //   children: [
-              //     //     GestureDetector(
-              //     //       onTap: (){
-              //     //         print("ALL click");
-              //     //       },
-              //     //       child: Text("All Timers"),
-              //     //     ),
-              //     //     GestureDetector(
-              //     //       onTap: (){print("Ac click");},
-              //     //       child: Text("Active Timers"),
-              //     //     ),
-              //     //
-              //     //
-              //     //   ],
-              //     //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //     // ),
-              //     ),
+
               SizedBox(
                 height: 20,
               ),
@@ -125,53 +101,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   )]),
                 ),
               ),
-             SizedBox(
-               height: 300,
-               child: TabBarView(
-                 children: [
-                   Container(
-                     child: Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       children: [
-                         Column(
-                           children: [
-                             Padding(
-                               padding: const EdgeInsets.all(8.0),
-                               child: Text("Workout timer"),
-                             ),
-                             Padding(
-                               padding: const EdgeInsets.all(8.0),
-                               child: Text("15:00"),
-                             ),
-                           ],
-                         ),
-                         StartStopButton(buttonName: "START",color: Colors.green,)
-                       ],
-                     ),
-                   ),
-                   Container(
-                     child: Row(
-                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       children: [
-                         Column(
-                           children: [
-                             Padding(
-                               padding: const EdgeInsets.all(8.0),
-                               child: Text("Workout timer"),
-                             ),
-                             Padding(
-                               padding: const EdgeInsets.all(8.0),
-                               child: Text("15:00"),
-                             ),
-                           ],
-                         ),
-                         StartStopButton(buttonName: "STOP",color: Colors.red,)
-                       ],
-                     ),
-                   ),
-                 ],
-               ),
-             )
+             Expanded(child: TabBarView(
+
+               children: [
+                 ListView(
+                   children: [ TimerSegment(title: "Workout Timer", time: "15:00", buttonName: "Start", color: Colors.green),
+                     SizedBox(height: size.height/150,),
+                     TimerSegment(title: "Sex Timer", time: "15:00", buttonName: "Start", color: Colors.green),],
+                 ),
+                 ListView(
+                   children: [
+                     TimerSegment(title: "Workout timer", time: "13:15", buttonName: "Stop", color: Colors.red)
+                   ],
+                 )
+
+               ],
+             ))
             ],
           ),
         )),
